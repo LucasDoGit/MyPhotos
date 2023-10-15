@@ -67,3 +67,5 @@ Para obter mais informações, entre em contato conosco em:
 
 Obrigado por usar o MyPhotos!
 
+asdasd
+
