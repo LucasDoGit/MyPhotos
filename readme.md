@@ -24,8 +24,7 @@ npm install
 ```
 3. crie um projeto no firebase para armazenar os dados do aplicativo e usar o servico de autenticação. Para integrar o projeto em react-native é necessários usar a opção "*App da Web*".
 4. configure o arquivo *firebase.js* para conectar ao firebase.
-> após configurar criar o projeto web você recebe um parecido com o abaixo para integrar no seu código. Exemplo:
-> as regras do aplicativo ainda estão sendo criadas, pois não foi finalizado. Então libere a escrita e leitura para executar o aplicativo.
+> após configurar criar o projeto web você recebe um script parecido com o abaixo, para integrar no seu código. Exemplo:
 ```javascript
 const firebaseConfig = {
   apiKey: "AIzaSDCjcwfdjgjfyfXFK7Qussu1ZBcA1zzNM",
@@ -38,6 +37,7 @@ const firebaseConfig = {
   databaseURL: "https://projeto-myphotos-default-abcd.firebaseio.com" // url do RealTimeDatabase
 };
 ```
+> as regras do aplicativo ainda estão sendo criadas, pois não foi finalizado. Então libere a escrita e leitura para executar o aplicativo.
 5. Inicie o aplicativo
 ```bash
 npx expo start
@@ -52,7 +52,7 @@ Aqui estão alguns snapshots da interface do usuário do MyPhotos:
 
 ## Contribuindo
 
-Sinta-se à vontade para contribuir para o desenvolvimento do MyPhotos.
+Sinta-se à vontade para contribuir para o desenvolvimento do MyPhotos e me ajudar com novas formas de se desenvolver.
 
 ## Licença
 
@@ -60,10 +60,8 @@ Este projeto é licenciado sob a Licença MIT. Consulte o arquivo LICENSE.md par
 
 ## Contato
 
-Para obter mais informações, entre em contato conosco em:
+Para obter mais informações, entre em contato em:
 
 - Email: lucas.saiz19@gmail.com
 - GitHub: https://github.com/LucasDoGit/MyPhotos.git
-
-Obrigado por usar o MyPhotos!
 
