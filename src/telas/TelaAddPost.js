@@ -5,10 +5,13 @@ import firebase from '../servicos/firebase.js';
 import { Picker } from '@react-native-picker/picker';
 import { Colors } from '../paleta/cores.js'
 import { getDatabase, ref, update } from 'firebase/database';
+import { getDownloadURL, getStorage, ref as storageRef, uploadBytes } from "firebase/storage";
 
 const TelaAddPost = ({navigation, route}) => {
     const [selectedTag, setSelectedTag] = useState('')
     const [availableTags, setAvailableTags] = useState([])
+    const [postFailed, setPostFailed] = useState(false)
+
     const image = route.params.image ? route.params.image : null
     // busca frases com base nas tags passadas
     const searchQuotes = async () => {
@@ -21,20 +24,32 @@ const TelaAddPost = ({navigation, route}) => {
         }
         fetch(url)
             .then((res) => res.json())
-            .then((data) =>{
+            .then(async (data) =>{
                 const database = getDatabase(firebase)
+                const storage = getStorage(firebase)
                 var postId = Date.now().toString()
+                var imageUrl = ''
+                if(image) {
+                    const imageRef = storageRef(storage, 'images/' + postId + '.jpg')
+                    const imageData = await fetch(image).then((res) => res.blob())
+                    const uploadTask = await uploadBytes(imageRef, imageData)
+                    imageUrl = await getDownloadURL(imageRef)
+                }
                 const userRef = ref(database, 'users/'+ route.params.uid+"/posts/"+postId)
-                update(userRef, { legenda: data[0].content })
+                update(userRef, { legenda: data[0].content, foto: imageUrl })
                     .then(() =>{
-                        console.log('Post criado: ', data[0].content);
-                        navigation.navigate('meusPosts', route.params)
+                        // console.log('Post criado: ', data[0].content);
+                        setPostFailed(false)
+                        navigation.navigate('posts', {uid: route.params.uid})
                     })
                     .catch((error) => {
+                        setPostFailed(true)
                         console.log('Erro ao criar post', error);
                     })
             })
-            .catch((error) => console.log('Erro ao requisitar frases: ', error));
+            .catch((error) => {
+                setPostFailed(true)
+                console.log('Erro ao requisitar frases: ', error)});
     }
     useEffect(() => {
         fetch('https://api.quotable.io/tags')
@@ -47,10 +62,12 @@ const TelaAddPost = ({navigation, route}) => {
     return (
         <View style={styles.container}>
             <Header showNav={true} navigation={navigation} route={route} />
+            {postFailed ? <Text styles={styles.postFailed}>Falha ao enviar o post</Text> : null}
             {image ? <Image source={{ uri: image }} style={styles.image} /> : null}
             <View style={styles.contentContainer}>
                 <Button
                     onPress={() => {navigation.navigate('camera', {uid: route.params.uid})}}
+                    color={Colors.cor1}
                     title="Tirar Foto"
                 />
                 <Picker 
@@ -89,6 +106,11 @@ const styles = StyleSheet.create({
     image: {
         flex: 1,
         resizeMode: 'contain'
+    },
+    postFailed: {
+        fontWeight: 'bold',
+        color: 'red'
     }
-})
+});
+
 export default TelaAddPost;

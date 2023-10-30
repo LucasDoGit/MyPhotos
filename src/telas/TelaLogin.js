@@ -17,7 +17,7 @@ const TelaLogin = ({ navigation, route }) => {
         setLoginFailed(false)
         // Signed in
         //const user = userCredential.user;
-        console.log('Usuario logado com sucesso:', userCredential.user.email);
+        //console.log('Usuario logado com sucesso:', userCredential.user.email);
         navigation.navigate('posts', {uid: userCredential.user.uid});
       })
       .catch((error) => {

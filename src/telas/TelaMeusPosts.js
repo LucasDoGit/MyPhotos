@@ -3,11 +3,13 @@ import { View, Text, StyleSheet, FlatList, Alert, Pressable, Image } from 'react
 import Header from '../componentes/Header.js';
 import firebase from '../servicos/firebase.js';
 import { getDatabase, ref, get, remove } from 'firebase/database';
+import { getStorage, ref as storageRef, deleteObject } from "firebase/storage";
 import { Colors } from '../paleta/cores.js';
 
 const TelaMeusPosts = ({route, navigation}) => {
     const [posts, setPosts] = useState([]);
     const database = getDatabase(firebase);
+    const storage = getStorage(firebase);
 
     useEffect(() => {
         const userRef = ref(database, 'users/'+route.params.uid);
@@ -28,13 +30,20 @@ const TelaMeusPosts = ({route, navigation}) => {
             .catch ((error) => { console.error('Erro ao buscar posts:', error); })
     }, [route.params])
 
-    const deletePost = (postId) => {
+    const deletePost = (postId, foto) => {
         const postRef = ref(database, 'users/'+route.params.uid+'/posts/'+postId);
+        const imageRef = storageRef(storage, 'images/' + postId + '.jpg')
         remove(postRef)
             .then(() =>{
                 const novosPosts = posts.filter((post) => post.postId !== postId);
                 // console.log('Post excluido com sucesso!');
                 setPosts(novosPosts);
+                if(foto){
+                    deleteObject(imageRef)
+                        .catch((err) => {
+                            console.error("Erro ao deletar imagem: "+ err)
+                        })
+                }
             })
             .catch((error) => {
                 console.error('Erro ao excluir post:', error);
@@ -51,14 +60,17 @@ const TelaMeusPosts = ({route, navigation}) => {
                     data={posts}
                     keyExtractor={(item) => item.postId}
                     renderItem={({ item }) => (
+                        <View styles={{paddingTop: 10}}>
+                            {item.foto && (<Image source={{uri: item.foto}} style={styles.foto}/>)}
                         <View style={styles.postContainer}>
                             <Text style={styles.container}>{item.legenda}</Text>
-                            <Pressable onPress={() => deletePost(item.postId)}>
+                            <Pressable onPress={() => deletePost(item.postId, item.foto)}>
                                 <Image
                                 source={require('../../assets/delete.png')}
                                 resizeMode='contain'
                                 style={styles.image}/>
                             </Pressable>
+                        </View>
                         </View>
                     )}
                 />
@@ -84,6 +96,11 @@ const styles = StyleSheet.create({
     image: {
         width:48,
         height: 24
+    },
+    foto: {
+        alignSelf: 'center',
+        width: '80%',
+        aspectRatio: 1
     }
 });
 

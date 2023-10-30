@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { View, Text, Image, StyleSheet, FlatList } from 'react-native';
 import Header from '../componentes/Header.js';
 import firebase from '../servicos/firebase.js';
 import { getDatabase, ref, get } from 'firebase/database';
@@ -40,9 +40,12 @@ const TelaPosts = ({route, navigation}) => {
                     data={posts}
                     keyExtractor={(item) => item.postId}
                     renderItem={({ item }) => (
+                        <View styles={{paddingTop: 10}}>
+                            {item.foto && (<Image source={{uri: item.foto}} style={styles.foto}/>)}
                         <View style={styles.postContainer}>
                             <Text style={styles.userName}>{item.userName}:</Text>
                             <Text style={styles.container}>{item.legenda}</Text>
+                        </View>
                         </View>
                     )}
                 />
@@ -69,6 +72,11 @@ const styles = StyleSheet.create({
     },
     header: {
         flex: 0.25
+    },
+    foto: {
+        alignSelf: 'center',
+        width: '80%',
+        aspectRatio: 1
     }
 });
 
