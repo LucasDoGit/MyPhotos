@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet, FlatList } from 'react-native';
+import { View, Text, Image, StyleSheet, FlatList, Pressable } from 'react-native';
 import Header from '../componentes/Header.js';
 import firebase from '../servicos/firebase.js';
 import { getDatabase, ref, get } from 'firebase/database';
@@ -45,6 +45,12 @@ const TelaPosts = ({route, navigation}) => {
                         <View style={styles.postContainer}>
                             <Text style={styles.userName}>{item.userName}:</Text>
                             <Text style={styles.container}>{item.legenda}</Text>
+                            <Pressable onPress={() => navigation.navigate('localizacao', {uid: route.params.uid, post: item})}>
+                                <Image
+                                source={require('../../assets/localizacao.png')}
+                                resizeMode='contain'
+                                style={styles.image}/>
+                            </Pressable>
                         </View>
                         </View>
                     )}
@@ -77,7 +83,11 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         width: '80%',
         aspectRatio: 1
-    }
+    },
+    image: {
+        width:48,
+        height: 48
+    },
 });
 
 export default TelaPosts;

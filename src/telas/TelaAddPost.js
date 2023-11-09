@@ -6,11 +6,13 @@ import { Picker } from '@react-native-picker/picker';
 import { Colors } from '../paleta/cores.js'
 import { getDatabase, ref, update } from 'firebase/database';
 import { getDownloadURL, getStorage, ref as storageRef, uploadBytes } from "firebase/storage";
+import * as Location from 'expo-location';
 
 const TelaAddPost = ({navigation, route}) => {
     const [selectedTag, setSelectedTag] = useState('')
     const [availableTags, setAvailableTags] = useState([])
     const [postFailed, setPostFailed] = useState(false)
+    const [location, setLocation] = useState(null)
 
     const image = route.params.image ? route.params.image : null
     // busca frases com base nas tags passadas
@@ -36,7 +38,7 @@ const TelaAddPost = ({navigation, route}) => {
                     imageUrl = await getDownloadURL(imageRef)
                 }
                 const userRef = ref(database, 'users/'+ route.params.uid+"/posts/"+postId)
-                update(userRef, { legenda: data[0].content, foto: imageUrl })
+                update(userRef, { legenda: data[0].content, foto: imageUrl, geolocalizacao: location })
                     .then(() =>{
                         // console.log('Post criado: ', data[0].content);
                         setPostFailed(false)
@@ -51,13 +53,28 @@ const TelaAddPost = ({navigation, route}) => {
                 setPostFailed(true)
                 console.log('Erro ao requisitar frases: ', error)});
     }
-    useEffect(() => {
+    // funcao fetch que faz a busca de tags na API quotable
+    const searchTags = async () => {
         fetch('https://api.quotable.io/tags')
             .then((res) => res.json())
             .then((data) => {
                 setAvailableTags(data);
             })
             .catch((err) => console.log('Erro ao buscar tags: ', err));
+    }
+    // funcao fetch para buscar a solicitar e buscar a localização do usuario
+    const getLocation = async () => {
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if(status !== 'granted') {
+            return (<View><Text style={styles.postFailed}>Permissão de Localização negada!</Text></View>)
+        }
+        let currentLocation = await Location.getCurrentPositionAsync({});
+        setLocation({latitude: currentLocation.coords.latitude, longitude: currentLocation.coords.longitude})
+    }
+    // chama as funções abaixo assim que a página do aplicativo for aberta
+    useEffect(() => {
+        searchTags()
+        getLocation()
     }, []) 
     return (
         <View style={styles.container}>
@@ -83,7 +100,7 @@ const TelaAddPost = ({navigation, route}) => {
                     onPress={searchQuotes}
                     color={Colors.cor2}
                     title='Gerar post'
-                    />
+                />
             </View>
         </View>
     );

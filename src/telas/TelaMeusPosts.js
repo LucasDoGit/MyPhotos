@@ -70,6 +70,12 @@ const TelaMeusPosts = ({route, navigation}) => {
                                 resizeMode='contain'
                                 style={styles.image}/>
                             </Pressable>
+                            <Pressable onPress={() => navigation.navigate('localizacao', {uid: route.params.uid, post: item})}>
+                                <Image
+                                source={require('../../assets/localizacao.png')}
+                                resizeMode='contain'
+                                style={styles.image}/>
+                            </Pressable>
                         </View>
                         </View>
                     )}

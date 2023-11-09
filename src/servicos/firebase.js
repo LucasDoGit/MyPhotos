@@ -10,14 +10,14 @@ import { getDatabase } from "firebase/database";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyCjcw5bKpV_MwyfXFK7Qussu1ZBcA1zzNM",
-  authDomain: "projeto-myphotos.firebaseapp.com",
-  projectId: "projeto-myphotos",
-  storageBucket: "projeto-myphotos.appspot.com",
-  messagingSenderId: "156783944309",
-  appId: "1:156783944309:web:605079dbb077ed618c4e3c",
-  measurementId: "G-FLN6Y419X8",
-  databaseURL: "https://projeto-myphotos-default-rtdb.firebaseio.com"
+  apiKey: "",
+  authDomain: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: "",
+  appId: "",
+  measurementId: "",
+  databaseURL: ""
 };
 
 // Initialize Firebase
