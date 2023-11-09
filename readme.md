@@ -5,9 +5,11 @@ MyPhotos é um aplicativo de compartilhamento de fotos e frases onde os usuário
 ## Funcionalidades
 
 - Criação de posts com imagens e texto.
-- Post de texto é gerado automatico com a [quotable API](https://github.com/lukePeavey/quotable)
+- Post de texto é gerado automatico com a [quotable API](https://github.com/lukePeavey/quotable).
 - Feed de notícias para ver os posts de outros usuários.
 - Perfil de usuário com posts.
+- uso da camera frontal e traseira para o post.
+- uso da geolocalizacao.
 
 ## Ambiente de Desenvolvimento
 
@@ -48,7 +50,8 @@ npx expo start
 
 Aqui estão alguns snapshots da interface do usuário do MyPhotos:
 
-![Snapshot 1](./assets/snapshot1.jpeg) ![Snapshot 2](./assets/snapshot2.jpeg) ![Snapshot 3](./assets/snapshot3.jpeg)
+![Snapshot 1](./assets/snapshot1.jpeg) ![Snapshot 2](./assets/snapshot2.jpeg)
+![Snapshot 3](./assets/snapshot3.jpeg) ![Snapshot 4](./assets/snapshot4.jpeg)
 
 ## Contribuindo
 
@@ -63,5 +66,5 @@ Este projeto é licenciado sob a Licença MIT. Consulte o arquivo LICENSE.md par
 Para obter mais informações, entre em contato em:
 
 - Email: lucas.saiz19@gmail.com
-- GitHub: https://github.com/LucasDoGit/MyPhotos.git
+- GitHub: https://github.com/LucasDoGit
 
