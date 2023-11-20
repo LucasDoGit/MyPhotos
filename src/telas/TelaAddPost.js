@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Image, StyleSheet, Button } from 'react-native';
+import { View, Image, StyleSheet, Text, Button } from 'react-native';
 import Header from '../componentes/Header.js';
 import firebase from '../servicos/firebase.js';
 import { Picker } from '@react-native-picker/picker';
@@ -66,7 +66,7 @@ const TelaAddPost = ({navigation, route}) => {
     const getLocation = async () => {
         let { status } = await Location.requestForegroundPermissionsAsync();
         if(status !== 'granted') {
-            return (<View><Text style={styles.postFailed}>Permissão de Localização negada!</Text></View>)
+            return (<View>Permissão de Localização negada!</View>)
         }
         let currentLocation = await Location.getCurrentPositionAsync({});
         setLocation({latitude: currentLocation.coords.latitude, longitude: currentLocation.coords.longitude})
